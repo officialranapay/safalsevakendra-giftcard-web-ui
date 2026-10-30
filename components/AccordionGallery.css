@@ -1,0 +1,171 @@
+.accordion-gallery {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: var(--accordion-height);
+  gap: var(--accordion-gap);
+  overflow: hidden;
+  border-radius: var(--accordion-radius);
+  isolation: isolate;
+
+  touch-action: pan-y;
+}
+
+.accordion-gallery__item {
+  position: relative;
+  height: 100%;
+  min-width: 0;
+  flex: 0 0 auto;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: var(--accordion-radius);
+  background: #111;
+  transform: translateZ(0);
+  will-change: width, filter;
+}
+
+.accordion-gallery__image {
+  position: absolute;
+  inset: 0;
+  width: 115%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+  will-change: transform;
+  user-select: none;
+  pointer-events: none;
+}
+
+.accordion-gallery__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.04) 0%,
+      rgba(0, 0, 0, 0.08) 45%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.accordion-gallery__content {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: var(--accordion-text);
+  pointer-events: none;
+}
+
+.accordion-gallery__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(10px);
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.accordion-gallery__label {
+  display: block;
+
+  color: var(--accordion-text);
+
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+
+  white-space: nowrap;
+
+  text-shadow:
+    0 2px 10px
+    rgba(0, 0, 0, 0.3);
+
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.accordion-gallery__shine {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.12) 45%,
+      transparent 70%
+    );
+
+  opacity: 0;
+
+  transform: translateX(-100%);
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.8s ease;
+}
+
+.accordion-gallery__item:hover
+  .accordion-gallery__shine {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+.accordion-gallery__item:focus-visible {
+  outline: 3px solid
+    var(--accordion-accent);
+
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   LAPTOP / TABLET
+   ===================================================== */
+
+@media (max-width: 1024px) {
+  .accordion-gallery {
+    height: 380px;
+  }
+
+  .accordion-gallery__content {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .accordion-gallery__label {
+    font-size: 17px;
+  }
+}

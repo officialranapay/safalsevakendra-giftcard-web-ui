@@ -1,0 +1,398 @@
+
+@import "tw-animate-css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   SAFALSEVAKENDRA THEME
+========================================================= */
+
+:root {
+  color-scheme: light;
+
+  --background: #ffffff;
+  --foreground: #10264a;
+
+  --card: #ffffff;
+  --card-foreground: #10264a;
+
+  --popover: #ffffff;
+  --popover-foreground: #10264a;
+
+  /* Primary brand blue */
+  --primary: #0757c8;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: #eff6ff;
+  --secondary-foreground: #10264a;
+
+  /* Muted */
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+
+  /* Orange brand accent */
+  --accent: #fff4e5;
+  --accent-foreground: #9a4d00;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #0757c8;
+
+  --chart-1: #0757c8;
+  --chart-2: #ff8a00;
+  --chart-3: #16a34a;
+  --chart-4: #64748b;
+  --chart-5: #93c5fd;
+
+  --radius: 0.625rem;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #10264a;
+  --sidebar-primary: #0757c8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eff6ff;
+  --sidebar-accent-foreground: #10264a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #0757c8;
+
+  /* Project brand colors */
+  --brand: #0757c8;
+  --brand-hover: #06449d;
+  --brand-light: #eff6ff;
+  --brand-orange: #ff8a00;
+  --brand-orange-light: #fff4e5;
+
+  --ink: #10264a;
+  --mute: #64748b;
+  --sky: #eff6ff;
+  --ice: #f8fbff;
+  --deep: #06449d;
+}
+
+/* =========================================================
+   DARK THEME VARIABLES
+   Keep light theme as default.
+========================================================= */
+
+.dark {
+  color-scheme: dark;
+
+  --background: #0f172a;
+  --foreground: #f8fafc;
+
+  --card: #172238;
+  --card-foreground: #f8fafc;
+
+  --popover: #172238;
+  --popover-foreground: #f8fafc;
+
+  --primary: #60a5fa;
+  --primary-foreground: #10264a;
+
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  --accent: #3d2a16;
+  --accent-foreground: #fdba74;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #334155;
+  --input: #334155;
+  --ring: #60a5fa;
+
+  --chart-1: #60a5fa;
+  --chart-2: #fb923c;
+  --chart-3: #4ade80;
+  --chart-4: #94a3b8;
+  --chart-5: #a5b4fc;
+
+  --sidebar: #172238;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #60a5fa;
+  --sidebar-primary-foreground: #10264a;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #334155;
+  --sidebar-ring: #60a5fa;
+
+  --brand: #60a5fa;
+  --brand-hover: #93c5fd;
+  --brand-light: #1e293b;
+  --brand-orange: #fb923c;
+  --brand-orange-light: #3d2a16;
+
+  --ink: #f8fafc;
+  --mute: #94a3b8;
+  --sky: #1e293b;
+  --ice: #0f172a;
+  --deep: #93c5fd;
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    background: var(--background);
+    color: var(--foreground);
+
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+
+  ::selection {
+    background: #dbeafe;
+    color: #10264a;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+  }
+}
+
+/* =========================================================
+   COMPONENTS
+========================================================= */
+
+@layer components {
+  /* Primary button */
+
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 px-5 font-semibold text-white transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50;
+    background-color: var(--brand);
+  }
+
+  .btn:hover {
+    background-color: var(--brand-hover);
+  }
+
+  /* Secondary button */
+
+  .btn2 {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 border bg-white px-5 font-semibold transition-colors duration-200;
+    border-color: #cbdcf5;
+    color: var(--brand);
+  }
+
+  .btn2:hover {
+    background-color: var(--brand-light);
+  }
+
+  /* Simple card */
+
+  .card {
+    @apply border bg-white;
+    border-color: var(--border);
+  }
+
+  /* Form inputs */
+
+  .inp {
+    @apply min-h-11 w-full border bg-white px-3 outline-none transition-colors duration-200;
+    border-color: var(--input);
+    color: var(--ink);
+  }
+
+  .inp::placeholder {
+    color: #94a3b8;
+  }
+
+  .inp:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgb(7 87 200 / 10%);
+  }
+
+  /* Main container */
+
+  .wrap {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Horizontal scrolling */
+
+  .snap {
+    @apply flex snap-x gap-4 overflow-x-auto pb-2;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .snap::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Brand text */
+
+  .text-brand {
+    color: var(--brand);
+  }
+
+  .text-orange-brand {
+    color: var(--brand-orange);
+  }
+
+  /* Brand backgrounds */
+
+  .bg-brand {
+    background-color: var(--brand);
+  }
+
+  .bg-brand-light {
+    background-color: var(--brand-light);
+  }
+
+  .bg-brand-orange {
+    background-color: var(--brand-orange);
+  }
+
+  /* Brand border */
+
+  .border-brand {
+    border-color: var(--brand);
+  }
+}
+
+/* =========================================================
+   THEME FONT
+========================================================= */
+
+@layer base {
+  .theme {
+    --font-heading: var(--font-sans);
+  }
+}
+
+/* =========================================================
+   MOBILE RESPONSIVENESS
+========================================================= */
+
+@media (max-width: 639px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  #__next {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  main {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  select {
+    max-width: 100%;
+  }
+}
+
+/* =========================================================
+   HERO GALLERY RESPONSIVENESS
+========================================================= */
+
+.hero-gallery-mobile {
+  display: none;
+}
+
+.hero-gallery-desktop {
+  display: block;
+}
+
+@media (max-width: 520px) {
+  .hero-gallery-desktop {
+    display: none !important;
+  }
+
+  .hero-gallery-mobile {
+    display: block !important;
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   TEXT SELECTION
+   Keep normal text selectable and copyable.
+========================================================= */
+
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
