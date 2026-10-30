@@ -375,9 +375,9 @@ export default function VerticalTabs({
       y: reduce ? 0 : 280,
       rotate: reduce ? 0 : active % 2 === 0 ? -8 : 8,
       zIndex: 1,
-      transition: { duration: 0.7, ease: [0.55, 0, 0.9, 0.4] },
+      transition: { duration: 0.35, ease: "easeOut" },
     }}
-    transition={{ duration: 0.25 }}
+    transition={{ duration: 0.15 }}
   >
    <Lanyard
   frontImage={cur.image}
@@ -386,9 +386,9 @@ export default function VerticalTabs({
   imageFit="cover"
   finish="glossy"
   cornerRadius={12}
-  size={1}
+  size={0.95}
   anchor="top"
-  strapLength={1}
+  strapLength={0.60}
   strapColor="#222"
   metal="silver"
   breeze={0.5}

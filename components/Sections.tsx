@@ -1421,7 +1421,7 @@ const policies = [
             <img
               src="/Safalsevakendra.png"
               alt="Safalsevakendra"
-              className="h-9 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </div>
 

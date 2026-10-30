@@ -5,18 +5,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  ArrowDown,
   ArrowRight,
   Check,
   ChevronDown,
   ClipboardList,
-  Gift,
-  Package,
+  Mail,
+  Clock,
 } from "lucide-react";
 
 import { useApp } from "@/lib/store";
 import { inr } from "@/lib/data";
-import Voucher from "@/components/Voucher";
 import Logo from "@/components/Logo";
 
 /* =====================================================
@@ -31,8 +29,8 @@ const tl = [
   "Order Placed",
   "Payment Processing",
   "Payment Successful",
-  "Voucher Generated",
-  "Completed",
+  "Voucher Processing",
+  "Voucher Delivery Pending",
 ];
 
 /* =====================================================
@@ -146,12 +144,12 @@ export default function Orders() {
       }
 
       await new Promise<void>((resolve) => {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      resolve();
-    });
-  });
-});
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
 
       await new Promise((resolve) => setTimeout(resolve, 250));
 
@@ -174,7 +172,9 @@ export default function Orders() {
   return (
     <main className="min-h-screen bg-white">
       <div className="wrap mx-auto max-w-3xl px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-14">
+
         {/* HEADER */}
+
         <header className="mb-8 border-b border-slate-200 pb-5">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#0757C8]">
             Your Account
@@ -185,11 +185,12 @@ export default function Orders() {
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            View your purchases, payment status and gift card vouchers.
+            View your purchases, payment status and gift card delivery updates.
           </p>
         </header>
 
         {/* EMPTY STATE */}
+
         {orders.length === 0 && (
           <div className="border border-slate-200 bg-white px-5 py-12 text-center sm:py-14">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#EFF6FF] text-[#0757C8]">
@@ -220,21 +221,25 @@ export default function Orders() {
         )}
 
         {/* ORDER LIST */}
+
         <div className="space-y-4">
           {orders.map((o: any) => {
             const isOpen = open === o.id;
             const orderItems = o.items || [];
-            const vouchers = o.vouchers || [];
 
             return (
               <article
                 key={o.id}
                 className="overflow-hidden border border-slate-200 bg-white transition-colors duration-200 hover:border-slate-300"
               >
+
                 {/* ORDER HEADER */}
+
                 <div className="p-4 sm:p-5">
                   <div className="flex flex-wrap items-start justify-between gap-4">
+
                     {/* BRAND AND ORDER INFO */}
+
                     <div className="flex min-w-0 flex-1 items-center gap-3">
                       {orderItems[0] && (
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white p-1.5">
@@ -267,6 +272,7 @@ export default function Orders() {
                     </div>
 
                     {/* TOTAL AND STATUS */}
+
                     <div className="shrink-0 text-right">
                       <p className="text-base font-bold text-slate-900 sm:text-lg">
                         {inr(o.total)}
@@ -297,12 +303,11 @@ export default function Orders() {
                   </div>
 
                   {/* DETAILS BUTTON */}
+
                   <button
                     type="button"
                     aria-expanded={isOpen}
-                    onClick={() =>
-                      setOpen(isOpen ? "" : o.id)
-                    }
+                    onClick={() => setOpen(isOpen ? "" : o.id)}
                     className="group mt-4 inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-[#0757C8] transition-colors hover:text-[#06449D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0757C8] focus-visible:ring-offset-2"
                   >
                     {isOpen ? "Hide Details" : "View Details"}
@@ -318,9 +323,12 @@ export default function Orders() {
                 </div>
 
                 {/* ORDER DETAILS */}
+
                 {isOpen && (
                   <div className="border-t border-slate-200 bg-slate-50/50 px-4 pb-5 pt-4 sm:px-5">
+
                     {/* ORDER SUMMARY */}
+
                     <section className="border border-slate-200 bg-white p-4">
                       <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                         Payment Summary
@@ -374,6 +382,7 @@ export default function Orders() {
                     </section>
 
                     {/* ORDER TIMELINE */}
+
                     <section className="mt-5">
                       <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
                         Order Timeline
@@ -403,57 +412,80 @@ export default function Orders() {
                       </ol>
                     </section>
 
-                    {/* VOUCHERS */}
-                    {vouchers.length > 0 && (
-                      <section className="mt-6">
-                        <div className="mb-3 flex items-center gap-2">
-                          <Gift
-                            size={17}
-                            className="text-[#0757C8]"
-                            aria-hidden="true"
-                          />
+                    {/* VOUCHER DELIVERY INFORMATION */}
 
-                          <h3 className="text-sm font-semibold text-slate-900">
-                            Gift Card Vouchers
+                    <section className="mt-6 border border-blue-100 bg-blue-50/60 p-4 sm:p-5">
+
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0757C8] text-white">
+                          <Mail size={20} />
+                        </div>
+
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-bold text-slate-900">
+                            Your gift card voucher is being processed!
                           </h3>
+
+                          <p className="mt-1 text-xs leading-5 text-slate-600">
+                            Your payment has been received successfully.
+                            We are processing your gift card voucher.
+                          </p>
+                        </div>
+                      </div>
+
+                      {orderItems.map((item: any, index: number) => (
+                        <div
+                          key={item.key || item.id || index}
+                          className="mt-4 flex items-center gap-3 border border-slate-200 bg-white p-3"
+                        >
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-100 p-1.5">
+                            <Logo p={item} />
+                          </div>
+
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-semibold text-slate-900">
+                              {item.brand || item.title || "Gift Card"}
+                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500">
+                              Voucher delivery pending
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+
+                      <div className="mt-4 border border-blue-100 bg-white p-4">
+                        <div className="flex items-center gap-2">
+                          <Clock size={17} className="text-[#0757C8]" />
+
+                          <p className="text-sm font-bold text-[#0757C8]">
+                            Delivery within 24 hours
+                          </p>
                         </div>
 
-                        <div className="space-y-3">
-                          {vouchers.map((voucher: any, index: number) => {
-                            const matchingItem =
-                              orderItems.find(
-                                (item: any) =>
-                                  item.brand === voucher.brand ||
-                                  item.title === voucher.brand
-                              ) || orderItems[0];
+                        <p className="mt-2 text-sm leading-6 text-slate-600">
+                          Your actual gift card voucher code and PIN
+                          will be sent to your registered email address
+                          within 24 hours of successful payment.
+                        </p>
 
-                            return (
-                              <div
-                                key={`${voucher.code || "voucher"}-${index}`}
-                                className="border border-slate-200 bg-white p-3.5 sm:p-4"
-                              >
-                                {matchingItem && (
-                                  <div className="mb-3 flex min-w-0 items-center gap-3">
-                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white p-1.5">
-                                      <Logo p={matchingItem} />
-                                    </div>
+                        <p className="mt-3 text-xs leading-5 text-slate-500">
+                          Please check your inbox and spam folder.
+                          If you do not receive your voucher within
+                          24 hours, please contact our support team
+                          with your Order ID.
+                        </p>
+                      </div>
 
-                                    <p className="min-w-0 truncate text-sm font-semibold text-slate-900">
-                                      {voucher.brand ||
-                                        matchingItem.brand ||
-                                        matchingItem.title ||
-                                        "Gift Card"}
-                                    </p>
-                                  </div>
-                                )}
+                      <div className="mt-4 flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-amber-400" />
 
-                                <Voucher v={voucher} />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </section>
-                    )}
+                        <span className="text-xs font-semibold text-amber-700">
+                          Voucher awaiting delivery
+                        </span>
+                      </div>
+
+                    </section>
+
                   </div>
                 )}
               </article>
@@ -462,15 +494,17 @@ export default function Orders() {
         </div>
 
         {/* FOOTER */}
+
         {orders.length > 0 && (
           <footer className="mt-8 border-t border-slate-200 pt-4">
             <p className="text-center text-xs text-slate-500">
               SafalSevaKendra
               <span className="mx-2 text-[#FF8A00]">•</span>
-              Your orders and vouchers in one place.
+              Your orders and voucher delivery updates in one place.
             </p>
           </footer>
         )}
+
       </div>
     </main>
   );
