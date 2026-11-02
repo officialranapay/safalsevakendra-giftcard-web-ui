@@ -21,24 +21,28 @@ const DEFAULT_SERVICES: Service[] = [
     title: "Shopping",
     description: "Amazon, Flipkart, Meesho and more. Gift anything they want.",
     image: "/section/amazon1.png",
+    backImage: "/section/Flipkart1.png",
   },
   {
     id: "02",
     title: "Food",
-    description: "Swiggy, Zomato, Dominos. Meals delivered to their door.",
+    description: "Swiggy, Zomato, Domino's. Meals delivered to their door.",
     image: "/section/swiggy1.png",
+    backImage: "/section/zomato1.png",
   },
   {
     id: "03",
     title: "Fashion",
     description: "Myntra, Ajio, Westside. Style for every wardrobe.",
     image: "/section/myntra1.png",
+    backImage: "/section/ajio1.png",
   },
   {
     id: "04",
     title: "Travel",
-    description: "MakeMyTrip, Uber, OYO. Trips, rides and stays.",
+    description: "MakeMyTrip, Cleartrip, Ixigo. Explore more.",
     image: "/section/makemytrip1.png",
+    backImage: "/section/cleartrip1.png",
   },
 ]
 
