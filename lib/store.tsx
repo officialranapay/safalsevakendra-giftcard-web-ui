@@ -1,5 +1,5 @@
 
-"use client"
+"use client";
 
 import {
   createContext,
@@ -7,284 +7,599 @@ import {
   useEffect,
   useState,
   ReactNode,
-} from "react"
+} from "react";
+
 import {
   AnimatePresence,
   motion,
   MotionConfig,
-} from "framer-motion"
+} from "framer-motion";
+
 import {
   ACCESS_TOKEN_KEY,
   AUTH_USER_KEY,
   VERIFICATION_TOKEN_KEY,
-} from "@/lib/api-client"
+} from "@/lib/api-client";
 
-const Ctx = createContext<any>(null)
+import { bySlug } from "@/lib/data";
 
-export const useApp = () => useContext(Ctx)
+/* ==========================================
+   CONTEXT
+========================================== */
 
-const CHECKOUT_STORAGE_KEY = "ranapay_checkout_items"
+const Ctx = createContext<any>(null);
+
+export const useApp = () => useContext(Ctx);
+
+/* ==========================================
+   safalsevakendra STORAGE KEYS
+========================================== */
+
+const USER_STORAGE_KEY = "safalsevakendra_user";
+const CART_STORAGE_KEY = "safalsevakendra_gift_cart";
+const ORDERS_STORAGE_KEY = "safalsevakendra_orders";
+const CHECKOUT_STORAGE_KEY = "safalsevakendra_checkout_items";
+
+/* ==========================================
+   STORAGE HELPERS
+========================================== */
 
 const get = (key: string, fallback: any) => {
   try {
-    return JSON.parse(localStorage.getItem(key) || "null") ?? fallback
+    return (
+      JSON.parse(localStorage.getItem(key) || "null") ??
+      fallback
+    );
   } catch {
-    return fallback
+    return fallback;
   }
-}
+};
 
 const put = (key: string, value: any) => {
-  localStorage.setItem(key, JSON.stringify(value))
-}
+  localStorage.setItem(key, JSON.stringify(value));
+};
 
-export function Provider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null)
-  const [cart, setCart] = useState<any[]>([])
-  const [orders, setOrders] = useState<any[]>([])
-  const [checkoutItems, setCheckoutItems] = useState<any[]>([])
-  const [checkoutSource, setCheckoutSource] = useState<"cart" | "buyNow" | null>(null)
-  const [ready, setReady] = useState(false)
+/* ==========================================
+   NORMALIZE CUSTOMER DETAILS
+========================================== */
 
-  const [msg, setMsg] = useState("")
-  const [cartOpen, setCartOpen] = useState(false)
-  const [loginOpen, setLoginOpen] = useState(false)
+const normalizeUser = (incomingUser: any) => {
+  if (!incomingUser) return null;
+
+  const displayName =
+    incomingUser?.fullName ||
+    incomingUser?.name ||
+    [
+      incomingUser?.firstName,
+      incomingUser?.lastName,
+    ]
+      .filter(Boolean)
+      .join(" ") ||
+    incomingUser?.email?.split("@")[0] ||
+    "User";
+
+  const phone =
+    incomingUser?.phone ||
+    incomingUser?.mobile ||
+    incomingUser?.phoneNumber ||
+    incomingUser?.mobileNumber ||
+    incomingUser?.customerPhone ||
+    incomingUser?.contactNumber ||
+    incomingUser?.profile?.phone ||
+    incomingUser?.profile?.mobile ||
+    incomingUser?.data?.phone ||
+    incomingUser?.data?.mobile ||
+    "";
+
+  return {
+    ...incomingUser,
+
+    name: displayName,
+
+    fullName:
+      incomingUser?.fullName || displayName,
+
+    phone: String(phone),
+  };
+};
+
+/* ==========================================
+   NORMALIZE PRODUCT / CART ITEM
+========================================== */
+
+const normalizeCartItem = (item: any) => {
+  const product = item?.slug
+    ? bySlug(item.slug)
+    : undefined;
+
+  const productId =
+    item?.giftCardId ||
+    item?.id ||
+    product?.id;
+
+  return {
+    ...item,
+
+    id: productId,
+    giftCardId: productId,
+
+    brand: item?.brand || product?.brand,
+
+    title: item?.title || product?.title,
+
+    slug: item?.slug || product?.slug,
+
+    color: item?.color || product?.color,
+
+    discount:
+      item?.discount ?? product?.discount ?? 0,
+  };
+};
+
+/* ==========================================
+   APP PROVIDER
+========================================== */
+
+export function Provider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [user, setUser] = useState<any>(null);
+
+  const [cart, setCart] = useState<any[]>([]);
+
+  const [orders, setOrders] = useState<any[]>([]);
+
+  const [checkoutItems, setCheckoutItems] =
+    useState<any[]>([]);
+
+  const [checkoutSource, setCheckoutSource] =
+    useState<"cart" | "buyNow" | null>(null);
+
+  const [ready, setReady] = useState(false);
+
+  const [msg, setMsg] = useState("");
+
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const [loginOpen, setLoginOpen] = useState(false);
+
+  /* ==========================================
+     RESTORE SAVED DATA
+  ========================================== */
 
   useEffect(() => {
-    setUser(get("ranapay_user", null))
-    setCart(get("ranapay_gift_cart", []))
-    setOrders(get("ranapay_orders", []))
+    const savedUser = get(USER_STORAGE_KEY, null);
+
+    setUser(normalizeUser(savedUser));
+
+    const savedCart = get(CART_STORAGE_KEY, []);
+
+    setCart(
+      Array.isArray(savedCart)
+        ? savedCart.map(normalizeCartItem)
+        : []
+    );
+
+    const savedOrders = get(ORDERS_STORAGE_KEY, []);
+
+    setOrders(
+      Array.isArray(savedOrders)
+        ? savedOrders
+        : []
+    );
+
+    /* RESTORE CHECKOUT SESSION */
 
     try {
-      const saved = sessionStorage.getItem(CHECKOUT_STORAGE_KEY)
+      const saved = sessionStorage.getItem(
+        CHECKOUT_STORAGE_KEY
+      );
 
       if (saved) {
-        const parsed = JSON.parse(saved)
+        const parsed = JSON.parse(saved);
 
         if (Array.isArray(parsed)) {
-          setCheckoutItems(parsed)
-          setCheckoutSource("buyNow")
-        } else if (parsed && Array.isArray(parsed.items)) {
-          setCheckoutItems(parsed.items)
-          setCheckoutSource(parsed.source === "cart" ? "cart" : "buyNow")
+          setCheckoutItems(
+            parsed.map(normalizeCartItem)
+          );
+
+          setCheckoutSource("buyNow");
+        } else if (
+          parsed &&
+          Array.isArray(parsed.items)
+        ) {
+          setCheckoutItems(
+            parsed.items.map(normalizeCartItem)
+          );
+
+          setCheckoutSource(
+            parsed.source === "cart"
+              ? "cart"
+              : "buyNow"
+          );
         }
       }
     } catch (error) {
-      console.error("Unable to restore checkout state:", error)
+      console.error(
+        "Unable to restore checkout state:",
+        error
+      );
     }
 
-    setReady(true)
-  }, [])
+    setReady(true);
+  }, []);
+
+  /* ==========================================
+     SAVE APP STATE
+  ========================================== */
 
   useEffect(() => {
-    if (!ready) return
+    if (!ready) return;
 
     try {
-      put("ranapay_user", user)
-      put("ranapay_gift_cart", cart)
-      put("ranapay_orders", orders)
+      put(USER_STORAGE_KEY, user);
+
+      put(CART_STORAGE_KEY, cart);
+
+      put(ORDERS_STORAGE_KEY, orders);
     } catch (error) {
-      console.error("Unable to save app state:", error)
+      console.error(
+        "Unable to save app state:",
+        error
+      );
     }
-  }, [user, cart, orders, ready])
+  }, [user, cart, orders, ready]);
+
+  /* ==========================================
+     TOAST MESSAGE
+  ========================================== */
 
   useEffect(() => {
-    if (!msg) return
+    if (!msg) return;
 
-    const timer = window.setTimeout(() => setMsg(""), 2200)
-    return () => window.clearTimeout(timer)
-  }, [msg])
+    const timer = window.setTimeout(
+      () => setMsg(""),
+      2200
+    );
 
-  // ADD TO CART: Add the selected product to the cart.
-  const addToCart = (p: any, amount: number, qty: number) => {
-    if (qty <= 0) return
+    return () => window.clearTimeout(timer);
+  }, [msg]);
+
+  /* ==========================================
+     ADD TO CART
+  ========================================== */
+
+  const addToCart = (
+    p: any,
+    amount: number,
+    qty: number
+  ) => {
+    if (qty <= 0) return;
+
+    const product = normalizeCartItem(p);
+
+    if (!product.id) {
+      setMsg("Invalid gift card product.");
+      return;
+    }
 
     setCart((current) => {
-      const key = `${p.slug}-${amount}`
-      const exists = current.some((item) => item.key === key)
+      const key = `${product.slug}-${amount}`;
+
+      const exists = current.some(
+        (item) => item.key === key
+      );
 
       if (exists) {
         return current.map((item) =>
           item.key === key
-            ? { ...item, qty: item.qty + qty }
+            ? {
+                ...item,
+                qty: item.qty + qty,
+              }
             : item
-        )
+        );
       }
 
       return [
         ...current,
         {
+          id: product.id,
+          giftCardId: product.id,
+
           key,
-          slug: p.slug,
-          brand: p.brand,
-          title: p.title,
-          color: p.color,
-          discount: p.discount,
+
+          slug: product.slug,
+          brand: product.brand,
+          title: product.title,
+          color: product.color,
+          discount: product.discount,
+
           amount,
           qty,
         },
-      ]
-    })
+      ];
+    });
 
-    setMsg(`${p.title} added to your cart.`)
-  }
+    setMsg(`${product.title} added to your cart.`);
+  };
 
-  // BUY NOW: Only the selected product goes to checkout.
-  // Existing cart items remain untouched.
-  const buyNow = (p: any, amount: number, qty: number) => {
-    if (qty <= 0) return
+  /* ==========================================
+     BUY NOW
+  ========================================== */
+
+  const buyNow = (
+    p: any,
+    amount: number,
+    qty: number
+  ) => {
+    if (qty <= 0) return;
+
+    const product = normalizeCartItem(p);
+
+    if (!product.id) {
+      setMsg("Invalid gift card product.");
+      return;
+    }
 
     const items = [
       {
-        key: `${p.slug}-${amount}`,
-        slug: p.slug,
-        brand: p.brand,
-        title: p.title,
-        color: p.color,
-        discount: p.discount,
+        id: product.id,
+        giftCardId: product.id,
+
+        key: `${product.slug}-${amount}`,
+
+        slug: product.slug,
+        brand: product.brand,
+        title: product.title,
+        color: product.color,
+        discount: product.discount,
+
         amount,
         qty,
       },
-    ]
+    ];
 
-    setCheckoutItems(items)
-    setCheckoutSource("buyNow")
+    setCheckoutItems(items);
+
+    setCheckoutSource("buyNow");
 
     try {
       sessionStorage.setItem(
         CHECKOUT_STORAGE_KEY,
-        JSON.stringify({ source: "buyNow", items })
-      )
+        JSON.stringify({
+          source: "buyNow",
+          items,
+        })
+      );
     } catch (error) {
-      console.error("Unable to save Buy Now checkout:", error)
+      console.error(
+        "Unable to save Buy Now checkout:",
+        error
+      );
     }
-  }
+  };
 
-  // CART CHECKOUT: Snapshot all current cart items.
+  /* ==========================================
+     CART CHECKOUT
+  ========================================== */
+
   const startCartCheckout = () => {
     if (cart.length === 0) {
-      setMsg("Your cart is empty.")
-      return false
+      setMsg("Your cart is empty.");
+      return false;
     }
 
-    const items = cart.map((item) => ({ ...item }))
+    const items = cart.map((item) =>
+      normalizeCartItem(item)
+    );
 
-    setCheckoutItems(items)
-    setCheckoutSource("cart")
+    const invalidItem = items.some(
+      (item) => !item.id
+    );
+
+    if (invalidItem) {
+      setMsg("Please add the gift card again.");
+      return false;
+    }
+
+    setCheckoutItems(items);
+
+    setCheckoutSource("cart");
 
     try {
       sessionStorage.setItem(
         CHECKOUT_STORAGE_KEY,
-        JSON.stringify({ source: "cart", items })
-      )
+        JSON.stringify({
+          source: "cart",
+          items,
+        })
+      );
     } catch (error) {
-      console.error("Unable to save cart checkout:", error)
+      console.error(
+        "Unable to save cart checkout:",
+        error
+      );
     }
 
-    return true
-  }
+    return true;
+  };
+
+  /* ==========================================
+     CLEAR CHECKOUT
+  ========================================== */
 
   const clearCheckout = () => {
-    setCheckoutItems([])
-    setCheckoutSource(null)
+    setCheckoutItems([]);
+
+    setCheckoutSource(null);
 
     try {
-      sessionStorage.removeItem(CHECKOUT_STORAGE_KEY)
+      sessionStorage.removeItem(
+        CHECKOUT_STORAGE_KEY
+      );
     } catch (error) {
-      console.error("Unable to clear checkout state:", error)
+      console.error(
+        "Unable to clear checkout state:",
+        error
+      );
     }
-  }
+  };
 
-  // Update the quantity of an item in the cart.
+  /* ==========================================
+     UPDATE CART QUANTITY
+  ========================================== */
+
   const setQty = (key: string, qty: number) => {
     setCart((current) =>
       current
         .map((item) =>
-          item.key === key ? { ...item, qty } : item
+          item.key === key
+            ? {
+                ...item,
+                qty,
+              }
+            : item
         )
         .filter((item) => item.qty > 0)
-    )
-  }
+    );
+  };
 
-  const clearCart = () => setCart([])
+  /* ==========================================
+     CLEAR CART
+  ========================================== */
 
-  const logout = () => {
-    setUser(null)
-    setLoginOpen(false)
-    clearCheckout()
-    setMsg("Logged out")
+  const clearCart = () => {
+    setCart([]);
+  };
 
-    try {
-      localStorage.removeItem("ranapay_user")
-      localStorage.removeItem(ACCESS_TOKEN_KEY)
-      localStorage.removeItem(AUTH_USER_KEY)
-      localStorage.removeItem(VERIFICATION_TOKEN_KEY)
-
-      window.dispatchEvent(new Event("auth-change"))
-      window.dispatchEvent(new Event("ranapay-auth-change"))
-    } catch (error) {
-      console.error("Unable to clear auth session:", error)
-    }
-  }
+  /* ==========================================
+     LOGIN
+  ========================================== */
 
   const login = (incomingUser: any) => {
-    const displayName =
-      incomingUser?.fullName ||
-      incomingUser?.name ||
-      [
-        incomingUser?.firstName,
-        incomingUser?.lastName,
-      ].filter(Boolean).join(" ") ||
-      incomingUser?.email?.split("@")[0] ||
-      "User"
+    const normalizedUser = normalizeUser(incomingUser);
 
-    const normalizedUser = {
-      ...incomingUser,
-      name: displayName,
-      fullName: incomingUser?.fullName || displayName,
-    }
+    if (!normalizedUser) return;
 
-    setUser(normalizedUser)
-    setMsg(`Welcome back, ${displayName.split(/\s+/)[0]}!`)
+    setUser(normalizedUser);
+
+    setMsg(
+      `Welcome back, ${
+        normalizedUser.name.split(/\s+/)[0]
+      }!`
+    );
 
     try {
       localStorage.setItem(
-        "ranapay_user",
+        USER_STORAGE_KEY,
         JSON.stringify(normalizedUser)
-      )
+      );
 
-      window.dispatchEvent(new Event("auth-change"))
-      window.dispatchEvent(new Event("ranapay-auth-change"))
+      window.dispatchEvent(
+        new Event("auth-change")
+      );
+
+      window.dispatchEvent(
+        new Event("safalsevakendra-auth-change")
+      );
     } catch (error) {
-      console.error("Unable to save user:", error)
+      console.error(
+        "Unable to save user:",
+        error
+      );
     }
-  }
+  };
+
+  /* ==========================================
+     LOGOUT
+  ========================================== */
+
+  const logout = () => {
+    setUser(null);
+
+    setLoginOpen(false);
+
+    clearCheckout();
+
+    setMsg("Logged out successfully.");
+
+    try {
+      localStorage.removeItem(USER_STORAGE_KEY);
+
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+
+      localStorage.removeItem(AUTH_USER_KEY);
+
+      localStorage.removeItem(VERIFICATION_TOKEN_KEY);
+
+      window.dispatchEvent(
+        new Event("auth-change")
+      );
+
+      window.dispatchEvent(
+        new Event("safalsevakendra-auth-change")
+      );
+    } catch (error) {
+      console.error(
+        "Unable to clear authentication session:",
+        error
+      );
+    }
+  };
+
+  /* ==========================================
+     ADD ORDER
+  ========================================== */
 
   const addOrder = (order: any) => {
-    setOrders((current) => [order, ...current])
-  }
+    setOrders((current) => [
+      order,
+      ...current,
+    ]);
+  };
+
+  /* ==========================================
+     CONTEXT VALUE
+  ========================================== */
 
   const value = {
     user,
     ready,
+
     cart,
     orders,
+
     checkoutItems,
     checkoutSource,
+
     addToCart,
     buyNow,
     startCartCheckout,
+
     setQty,
     clearCart,
     clearCheckout,
+
     toast: setMsg,
+
     cartOpen,
     setCartOpen,
+
     loginOpen,
     setLoginOpen,
+
     login,
     logout,
+
     addOrder,
-  }
+  };
+
+  /* ==========================================
+     PROVIDER RENDER
+  ========================================== */
 
   return (
     <Ctx.Provider value={value}>
@@ -294,9 +609,17 @@ export function Provider({ children }: { children: ReactNode }) {
         <AnimatePresence>
           {msg && (
             <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{
+                y: 40,
+                opacity: 0,
+              }}
+              animate={{
+                y: 0,
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+              }}
               role="status"
               aria-live="polite"
               className="fixed bottom-4 left-1/2 z-[70] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 rounded-xl bg-ink px-4 py-3 text-center text-sm text-white shadow-lg"
@@ -307,5 +630,5 @@ export function Provider({ children }: { children: ReactNode }) {
         </AnimatePresence>
       </MotionConfig>
     </Ctx.Provider>
-  )
+  );
 }

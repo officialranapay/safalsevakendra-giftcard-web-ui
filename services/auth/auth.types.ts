@@ -9,6 +9,7 @@ export type AuthUser = {
   id: string;
   fullName: string;
   email: string;
+  phoneNumber: string;
   isEmailVerified: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -25,6 +26,7 @@ export type VerifyOtpPayload = {
 
 export type RegisterPayload = {
   fullName: string;
+  phone: string;
 };
 
 export type SendOtpData = {

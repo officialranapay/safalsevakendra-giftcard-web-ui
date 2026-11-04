@@ -484,7 +484,7 @@ export default function Profile() {
                   text-mute
                 "
               >
-                {user.email} · {user.phone}
+                {user.email} · {user.phone || user.mobileNumber}
               </p>
 
             </div>
@@ -550,17 +550,25 @@ export default function Profile() {
 
 
         {/* COMPLETE ACCOUNT DETAILS */}
-        <section className="mt-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_6px_24px_rgba(15,23,42,0.04)] sm:p-6">
-          <h2 className="mb-2 text-lg font-bold text-[#071923]">Account Details</h2>
-          <DetailRow label="User ID" value={profileId} />
-          <DetailRow label="Full Name" value={profileName} />
-          <DetailRow label="Email Address" value={user.email} />
-          <DetailRow label="Email Verified" value={emailVerified} />
-          {/* <DetailRow label="Account Role" value={user.role} />
-          <DetailRow label="Phone Number" value={user.phone ?? user.mobile} />
-          <DetailRow label="Account Created" value={formatProfileDate(user.createdAt)} />
-          <DetailRow label="Last Updated" value={formatProfileDate(user.updatedAt)} /> */}
-        </section>
+       <section className="mt-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-[0_6px_24px_rgba(15,23,42,0.04)] sm:p-6">
+  <h2 className="mb-2 text-lg font-bold text-[#071923]">
+    Account Details
+  </h2>
+
+  <DetailRow label="User ID" value={profileId} />
+  <DetailRow label="Full Name" value={profileName} />
+  <DetailRow label="Email Address" value={user.email} />
+  <DetailRow label="Phone Number" value={user.phone || user.mobileNumber} />
+  <DetailRow label="Email Verified" value={emailVerified} />
+  <DetailRow
+    label="Account Created"
+    value={formatProfileDate(user.createdAt)}
+  />
+  {/* <DetailRow
+    label="Last Updated"
+    value={formatProfileDate(user.updatedAt)}
+  /> */}
+</section>
 
         {/* =====================================================
             ACTIONS

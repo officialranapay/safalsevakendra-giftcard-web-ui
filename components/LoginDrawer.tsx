@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   X,
   Mail,
+  Phone,
   ShieldCheck,
   ArrowLeft,
   ArrowRight,
@@ -57,6 +58,7 @@ export default function LoginDrawer() {
   const [left, setLeft] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [status, setStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
@@ -78,6 +80,7 @@ export default function LoginDrawer() {
     setLeft(0);
     setName("");
     setEmail("");
+    setPhoneNumber("");
     setStatus("idle");
     verifyingRef.current = false;
   }, [setLoginOpen]);
@@ -239,43 +242,49 @@ export default function LoginDrawer() {
     }
   };
 
-  const submitProfile = async (
-    event: FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-    setErr("");
+const submitProfile = async (
+  event: FormEvent<HTMLFormElement>
+) => {
+  event.preventDefault();
+  setErr("");
 
-    const fullName = name.trim();
+  const fullName = name.trim();
+  const phone = phoneNumber.trim();
 
-    if (!fullName) {
-      setErr("Please enter your full name.");
-      return;
+  if (!fullName) {
+    setErr("Please enter your full name.");
+    return;
+  }
+
+  if (!/^[6-9]\d{9}$/.test(phone)) {
+    setErr("Please enter a valid 10-digit phone number.");
+    return;
+  }
+
+  try {
+    const response = await registerMutation.mutateAsync({
+  fullName,
+  phone,
+});
+    const data = response.data;
+
+    if (!response.success || !data?.token || !data?.user) {
+      throw new Error(
+        response.message || "Registration failed."
+      );
     }
 
-    try {
-      const response = await registerMutation.mutateAsync({
-        fullName,
-      });
+    login({
+      ...data.user,
+      name: data.user.fullName,
+      loggedIn: true,
+    });
 
-      const data = response.data;
-
-      if (!response.success || !data?.token || !data?.user) {
-        throw new Error(
-          response.message || "Registration failed."
-        );
-      }
-
-      login({
-        ...data.user,
-        name: data.user.fullName,
-        loggedIn: true,
-      });
-
-      close();
-    } catch (error) {
-      setErr(getErrorMessage(error));
-    }
-  };
+    close();
+  } catch (error) {
+    setErr(getErrorMessage(error));
+  }
+};
 
   const inputClass =
     "mt-2 min-h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-brand focus:bg-white focus:ring-4 focus:ring-brand/10";
@@ -650,7 +659,39 @@ export default function LoginDrawer() {
                           required
                         />
                       </div>
+<div className="mt-4">
+  <label
+    htmlFor="login-phone"
+    className="text-sm font-semibold text-slate-800"
+  >
+    Phone Number
+  </label>
 
+  <div className="relative">
+    <Phone
+      size={18}
+      className="pointer-events-none absolute left-4 top-[29px] -translate-y-1/2 text-slate-400"
+    />
+
+    <input
+      id="login-phone"
+      type="tel"
+      inputMode="numeric"
+      autoComplete="tel"
+      maxLength={10}
+      className={`${inputClass} pl-11`}
+      placeholder="Enter 10-digit phone number"
+      value={phoneNumber}
+      onChange={(event) => {
+        setPhoneNumber(
+          event.target.value.replace(/\D/g, "").slice(0, 10)
+        );
+        setErr("");
+      }}
+      required
+    />
+  </div>
+</div>
                       {err && (
                         <p
                           role="alert"
@@ -663,7 +704,11 @@ export default function LoginDrawer() {
                       <button
                         type="submit"
                         className={`${primaryButtonClass} mt-5`}
-                        disabled={loading || !name.trim()}
+                        disabled={
+  loading ||
+  !name.trim() ||
+  !/^[6-9]\d{9}$/.test(phoneNumber)
+}
                       >
                         {registerMutation.isPending ? (
                           <>
