@@ -195,34 +195,32 @@ export default function Checkout() {
       return;
     }
 
-    if (items.length !== 1) {
-      setError(
-        "Please checkout with one gift card at a time."
-      );
-      return;
-    }
+  // VALIDATE ALL CART ITEMS
 
-    const item = items[0];
+const invalidItem = items.find((item: any) => {
+  const giftCardId = item.giftCardId || item.id;
 
-    const giftCardId =
-      item.giftCardId || item.id;
+  return (
+    !giftCardId ||
+    !item.title ||
+    !item.amount ||
+    !item.qty ||
+    Number(item.amount) <= 0 ||
+    Number(item.qty) <= 0
+  );
+});
 
-    if (
-      !giftCardId ||
-      !item.title ||
-      !item.amount ||
-      !item.qty
-    ) {
-      setError(
-        "Gift card details are incomplete. Please add the product again."
-      );
-      return;
-    }
+if (invalidItem) {
+  setError(
+    "Gift card details are incomplete. Please add the products again."
+  );
+  return;
+}
 
-    if (total <= 0) {
-      setError("Invalid payment amount.");
-      return;
-    }
+if (total <= 0) {
+  setError("Invalid payment amount.");
+  return;
+}
 
     setProcessing(true);
 
@@ -270,20 +268,28 @@ export default function Checkout() {
 
       /* PAYMENT PAYLOAD */
 
-      const payload: CreatePaymentPayload = {
-        giftCardId: String(giftCardId),
-        giftCardName: item.title,
-        denomination: Number(item.amount),
-        quantity: Number(item.qty),
+    // PREPARE ALL GIFT CARD ITEMS
 
-        discountPercent,
-        discountAmount,
-        purchaseAmount,
-        payableAmount: total,
+const paymentItems = items.map((item: any) => ({
+  giftCardId: String(item.giftCardId || item.id),
+  giftCardName: item.title,
+  denomination: Number(item.amount),
+  quantity: Number(item.qty),
+}));
 
-        deviceId,
-        deviceType,
-      };
+// CREATE PAYMENT PAYLOAD
+
+const payload: CreatePaymentPayload = {
+  items: paymentItems,
+
+  discountPercent,
+  discountAmount,
+  purchaseAmount,
+  payableAmount: total,
+
+  deviceId,
+  deviceType,
+};
 
       console.log(
         "SAFALSEVA PAYMENT REQUEST:",
@@ -309,23 +315,32 @@ export default function Checkout() {
 
       /* SAVE RESPONSE */
 
-      const paymentDetails = {
-        ...response.data,
+   const paymentDetails = {
+  ...response.data,
 
-        message: response.message,
+  message: response.message,
 
-        giftCardName: item.title,
-        denomination: item.amount,
-        quantity: item.qty,
+  items: paymentItems,
 
-        customerName,
-        customerEmail,
-        customerPhone,
+  giftCardName: paymentItems
+    .map((item) => item.giftCardName)
+    .join(", "),
 
-        coupon: coupon?.ok
-          ? couponCode.toUpperCase()
-          : null,
-      };
+  denomination: paymentItems[0]?.denomination || 0,
+
+  quantity: paymentItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  ),
+
+  customerName,
+  customerEmail,
+  customerPhone,
+
+  coupon: coupon?.ok
+    ? couponCode.toUpperCase()
+    : null,
+};
 
       sessionStorage.setItem(
         "safalseva_payment_details",
@@ -742,11 +757,11 @@ export default function Checkout() {
                 <button
                   type="button"
                   onClick={handlePayment}
-                  disabled={
-                    processing ||
-                    createPayment.isPending ||
-                    items.length !== 1
-                  }
+                 disabled={
+  processing ||
+  createPayment.isPending ||
+  items.length === 0
+}
                   className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-[#1B5FD1] px-4 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#154CB0] hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <LockKeyhole size={17} />

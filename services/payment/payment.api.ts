@@ -8,10 +8,13 @@ import { getSystemTokenApi } from "@/services/auth/system-token.api";
 
 
 export interface CreatePaymentPayload {
-  giftCardId: string;
-  giftCardName: string;
-  denomination: number;
-  quantity: number;
+  items: {
+    giftCardId: string;
+    giftCardName: string;
+    denomination: number;
+    quantity: number;
+  }[];
+
   discountPercent: number;
   discountAmount: number;
   purchaseAmount: number;

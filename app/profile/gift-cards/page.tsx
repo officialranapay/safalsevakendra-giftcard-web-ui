@@ -49,6 +49,123 @@ function formatDate(value?: string) {
 }
 
 /* =========================================
+   GET INDIVIDUAL GIFT CARD ITEMS
+========================================= */
+
+function getGiftCardItems(order: GiftCardOrder): any[] {
+  const items = (order as any).items;
+
+  // Multiple gift cards in one order
+  if (Array.isArray(items) && items.length > 0) {
+    return items;
+  }
+
+  // Backward compatibility for old single-card orders
+  if (order.giftCardName) {
+    return [
+      {
+        giftCardId: order.giftCardId,
+        giftCardName: order.giftCardName,
+        denomination: order.denomination,
+        quantity: order.quantity,
+        purchaseAmount: order.purchaseAmount,
+        discountAmount: order.discountAmount,
+        discountPercent: (order as any).discountPercent,
+        payableAmount: order.payableAmount,
+      },
+    ];
+  }
+
+  return [];
+}
+
+
+/* =========================================
+   BRAND LOGOS
+========================================= */
+
+const BRAND_IMAGES: Record<string, string> = {
+  ajio: "/brands/ajio.png",
+  amazon: "/brands/amazon.png",
+  apple: "/brands/apple.png",
+  bookmyshow: "/brands/bookmyshow.png",
+  cleartrip: "/brands/cleartrip.png",
+  croma: "/brands/croma.png",
+  decathlon: "/brands/decathlon.png",
+  dominos: "/brands/dominos.png",
+  firstcry: "/brands/firstcry.png",
+  flipkart: "/brands/flipkart.png",
+  googleplay: "/brands/google-play.png",
+  ikea: "/brands/ikea.png",
+  ixigo: "/brands/ixigo.png",
+  lenskart: "/brands/lenskart.png",
+  lifestyle: "/brands/lifestyle.png",
+  makemytrip: "/brands/makemytrip.png",
+  mcdonalds: "/brands/mcdonalds.png",
+  meesho: "/brands/meesho.png",
+  myntra: "/brands/myntra.png",
+  netflix: "/brands/netflix.png",
+  nykaafashion: "/brands/nykaa-fashion.png",
+  oyo: "/brands/oyo.png",
+  pepperfry: "/brands/pepperfry.png",
+  pvr: "/brands/pvr.png",
+  reliancedigital: "/brands/reliance-digital.png",
+  rupay: "/brands/rupay.png",
+  samsung: "/brands/samsung.png",
+  shoppersstop: "/brands/shoppers-stop.png",
+  sonyliv: "/brands/sonyliv.png",
+  spotify: "/brands/spotify.png",
+  starbucks: "/brands/starbucks.png",
+  swiggy: "/brands/swiggy.png",
+  tatacliq: "/brands/tata-cliq.png",
+  uber: "/brands/uber.png",
+  westside: "/brands/westside.png",
+  zomato: "/brands/zomato.png",
+};
+
+function normalizeBrand(value?: string) {
+  return (value || "")
+    .toLowerCase()
+    .replace(/gift\s*card/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function getBrandImage(item: any) {
+  const candidates = [
+    item.giftCardBrand,
+    item.brand,
+    item.giftCardName,
+    item.name,
+  ];
+
+  for (const candidate of candidates) {
+    const key = normalizeBrand(candidate);
+    if (key && BRAND_IMAGES[key]) return BRAND_IMAGES[key];
+  }
+
+  return null;
+}
+
+function BrandLogo({ item }: { item: any }) {
+  const image = getBrandImage(item);
+
+  return (
+    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#DFE9F8] bg-white p-1.5">
+      {image ? (
+        <img
+          src={image}
+          alt={item.giftCardBrand || item.brand || item.giftCardName || "Gift card"}
+          className="h-full w-full object-contain"
+          loading="lazy"
+        />
+      ) : (
+        <Gift size={23} strokeWidth={1.8} className="text-[#0757C8]" />
+      )}
+    </div>
+  );
+}
+
+/* =========================================
    SKELETON
 ========================================= */
 
@@ -111,23 +228,44 @@ function MyCardsSkeleton() {
 
 function GiftCardItem({
   order,
+  item,
 }: {
   order: GiftCardOrder;
+  item: any;
 }) {
+  const denomination = Number(item.denomination || 0);
+  const quantity = Number(item.quantity || 1);
+
+  const purchaseAmount = Number(
+    item.purchaseAmount ?? denomination * quantity
+  );
+
+  const discountAmount = Number(item.discountAmount || 0);
+
+  const payableAmount = Number(
+    item.payableAmount ?? purchaseAmount - discountAmount
+  );
+
+  const discountPercent = Number(item.discountPercent || 0);
+
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-[#DFE9F8] bg-white p-3.5 shadow-[0_4px_20px_rgba(7,87,200,0.04)] transition duration-300 hover:-translate-y-0.5 hover:border-[#B9D5FF] hover:shadow-[0_12px_32px_rgba(7,87,200,0.09)] sm:p-5">
 
       {/* GIFT CARD INFORMATION */}
 
       <div className="mb-4 flex min-w-0 items-center gap-3 pt-1">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#DFE9F8] bg-[#F7FAFF] text-[#0757C8]">
-          <Gift size={23} strokeWidth={1.8} />
-        </div>
+        <BrandLogo item={item} />
 
         <div className="min-w-0 flex-1">
           <h2 className="truncate text-sm font-bold text-[#10264A] sm:text-base">
-            {order.giftCardName || "Gift Card"}
+            {item.giftCardName || "Gift Card"}
           </h2>
+
+          {item.giftCardId && (
+            <p className="mt-1 text-xs text-[#64748B]">
+              Card ID: {item.giftCardId}
+            </p>
+          )}
 
           <p className="mt-1 break-all text-xs text-[#64748B]">
             Order ID: {order.orderId}
@@ -145,7 +283,7 @@ function GiftCardItem({
         </div>
       </div>
 
-      {/* GIFT CARD DETAILS */}
+      {/* INDIVIDUAL GIFT CARD DETAILS */}
 
       <div className="mb-4 grid grid-cols-2 gap-3 rounded-xl border border-[#DFE9F8] bg-[#F7FAFF] p-4">
 
@@ -155,7 +293,7 @@ function GiftCardItem({
           </p>
 
           <p className="mt-1 text-sm font-bold text-[#10264A]">
-            {inr(order.denomination)}
+            {inr(denomination)}
           </p>
         </div>
 
@@ -165,27 +303,37 @@ function GiftCardItem({
           </p>
 
           <p className="mt-1 text-sm font-bold text-[#10264A]">
-            {order.quantity}
+            {quantity}
           </p>
         </div>
 
         <div>
           <p className="text-xs text-[#64748B]">
-            Discount
+            Purchase Amount
+          </p>
+
+          <p className="mt-1 text-sm font-semibold text-[#10264A]">
+            {inr(purchaseAmount)}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs text-[#64748B]">
+            Discount {discountPercent > 0 ? `(${discountPercent}%)` : ""}
           </p>
 
           <p className="mt-1 text-sm font-semibold text-green-600">
-            -{inr(order.discountAmount)}
+            -{inr(discountAmount)}
           </p>
         </div>
 
-        <div>
+        <div className="col-span-2 border-t border-[#DFE9F8] pt-3">
           <p className="text-xs text-[#64748B]">
-            Total Amount
+            Payable Amount
           </p>
 
-          <p className="mt-1 text-sm font-bold text-[#0757C8]">
-            {inr(order.payableAmount)}
+          <p className="mt-1 text-lg font-extrabold text-[#0757C8]">
+            {inr(payableAmount)}
           </p>
         </div>
 
@@ -194,7 +342,6 @@ function GiftCardItem({
       {/* CONTACT MESSAGE */}
 
       <div className="rounded-xl border border-[#DFE9F8] bg-[#F7FAFF] p-4 sm:p-5">
-
         <div className="flex items-start gap-3">
 
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EFF6FF] text-[#0757C8]">
@@ -212,7 +359,6 @@ function GiftCardItem({
           </div>
 
         </div>
-
       </div>
 
     </article>
@@ -234,6 +380,15 @@ export default function MyCards() {
 
   const orders: GiftCardOrder[] =
     data?.data?.orders || [];
+
+  // Flatten every order into individual gift cards
+  const giftCardEntries = orders.flatMap((order) =>
+    getGiftCardItems(order).map((item, index) => ({
+      order,
+      item,
+      key: `${order._id}-${item.giftCardId || index}-${index}`,
+    }))
+  );
 
   /* LOADING */
 
@@ -318,13 +473,14 @@ export default function MyCards() {
                 </p>
 
                 <p className="mt-0.5 text-xs text-[#64748B]">
-                  Your purchased gift card orders
+                  Your purchased gift cards
                 </p>
               </div>
             </div>
 
             <span className="inline-flex shrink-0 items-center rounded-full bg-[#FFF3E3] px-3 py-1.5 text-xs font-bold text-[#C66B00]">
-              {orders.length} {orders.length === 1 ? "Order" : "Orders"}
+              {giftCardEntries.length}{" "}
+              {giftCardEntries.length === 1 ? "Gift Card" : "Gift Cards"}
             </span>
 
           </div>
@@ -367,14 +523,15 @@ export default function MyCards() {
           </div>
         )}
 
-        {/* GIFT CARD LIST */}
+        {/* INDIVIDUAL GIFT CARD LIST */}
 
-        {orders.length > 0 && (
+        {giftCardEntries.length > 0 && (
           <div className="space-y-4">
-            {orders.map((order) => (
+            {giftCardEntries.map(({ order, item, key }) => (
               <GiftCardItem
-                key={order._id}
+                key={key}
                 order={order}
+                item={item}
               />
             ))}
           </div>

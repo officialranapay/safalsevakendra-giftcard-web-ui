@@ -4,10 +4,12 @@
 ========================================== */
 
 export interface CreatePaymentPayload {
-  giftCardId: string;
-  giftCardName: string;
-  denomination: number;
-  quantity: number;
+  items: {
+    giftCardId: string;
+    giftCardName: string;
+    denomination: number;
+    quantity: number;
+  }[];
 
   discountPercent: number;
   discountAmount: number;
