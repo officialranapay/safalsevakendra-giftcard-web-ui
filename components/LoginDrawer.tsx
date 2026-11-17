@@ -125,10 +125,39 @@ export default function LoginDrawer() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [loginOpen, close]);
 
-  const getErrorMessage = (error: unknown) =>
-    error instanceof Error
-      ? error.message
-      : "Something went wrong. Please try again.";
+
+const getErrorMessage = (error: unknown): string => {
+  const apiError = error as {
+    response?: {
+      data?: {
+        message?: string;
+        error?: {
+          message?: string;
+        };
+      };
+    };
+    message?: string;
+  };
+
+  // Get actual backend error message
+  const backendMessage =
+    apiError?.response?.data?.message ||
+    apiError?.response?.data?.error?.message;
+
+  if (backendMessage) {
+    return backendMessage;
+  }
+
+  // Fallback for network and other errors
+  if (
+    apiError?.message &&
+    apiError.message !== "Request failed with status code 400"
+  ) {
+    return apiError.message;
+  }
+
+  return "Something went wrong. Please try again.";
+};
 
   const submitEmail = async (
     event: FormEvent<HTMLFormElement>

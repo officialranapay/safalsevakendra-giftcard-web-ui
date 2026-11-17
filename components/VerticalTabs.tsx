@@ -392,7 +392,7 @@ export default function VerticalTabs({
   cornerRadius={12}
   size={0.95}
   anchor="top"
-  strapLength={0.60}
+  strapLength={0.40}
   strapColor="#222"
   metal="silver"
   breeze={0.5}
