@@ -56,16 +56,7 @@ const sections = [
           consumer commission, regulator, or other forum where the law permits
           or requires the consumer to do so.
         </p>
-        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <p className="font-semibold text-amber-900">
-            Required before publication
-          </p>
-          <p className="mt-2 text-sm leading-6 text-amber-950">
-            Confirm the company’s registered-office address and applicable
-            court jurisdiction with Indian legal counsel. Do not insert an
-            assumed city or court.
-          </p>
-        </div>
+       
       </>
     ),
   },
@@ -144,33 +135,7 @@ const sections = [
       </div>
     ),
   },
-  {
-    title: "Important Legal Review Note",
-    content: (
-      <>
-        <p>
-          This is a general draft, not legal advice. Before publication, an
-          Indian legal professional should review the jurisdiction clause,
-          confirm the company’s registered-office jurisdiction, and ensure
-          consistency with the website Terms and Conditions, customer
-          contracts, third-party issuer/merchant agreements, and applicable
-          Indian law.
-        </p>
-        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <h3 className="font-semibold text-amber-900">
-            Pre-publication checklist
-          </h3>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-amber-950">
-            <li>Confirm the registered-office jurisdiction.</li>
-            <li>Insert the effective or revision date.</li>
-            <li>Check consistency with Terms & Conditions.</li>
-            <li>Review third-party issuer and merchant agreements.</li>
-            <li>Obtain Indian legal review before publication.</li>
-          </ul>
-        </div>
-      </>
-    ),
-  },
+  
 ];
 
 export default function GoverningLawJurisdictionPolicyPage() {
@@ -215,12 +180,12 @@ export default function GoverningLawJurisdictionPolicyPage() {
     <div className="mt-3 flex flex-col justify-center gap-1 text-sm text-slate-500 sm:flex-row sm:gap-6">
       <p>
         <span className="font-semibold text-slate-700">Effective Date:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
 
       <p>
         <span className="font-semibold text-slate-700">Last Updated:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -278,7 +243,7 @@ export default function GoverningLawJurisdictionPolicyPage() {
           </a>
 
           <p className="mt-4 text-xs leading-6 text-slate-400">
-            © {new Date().getFullYear()} SafalSevaKendra. All rights reserved.
+            © 2025 PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED. All rights reserved.
           </p>
         </footer>
       </article>

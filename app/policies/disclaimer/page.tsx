@@ -181,36 +181,7 @@ const sections = [
       </div>
     ),
   },
-  {
-    title: "Review Before Publication",
-    content: (
-      <>
-        <p>
-          This is a general draft and is not a substitute for legal advice.
-          Before publication, confirm that all descriptions of Prosper’s role,
-          partner arrangements, products and liability limitations are
-          accurate. Have this Disclaimer reviewed by an Indian
-          legal/compliance professional and ensure it is consistent with the
-          Terms & Conditions, Privacy Policy and product-specific policies.
-          Do not use a disclaimer to remove rights or responsibilities that
-          apply under law.
-        </p>
 
-        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <h3 className="font-semibold text-amber-900">
-            Pre-publication checklist
-          </h3>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-amber-950">
-            <li>Verify the company and partner descriptions.</li>
-            <li>Confirm the accuracy of liability limitations.</li>
-            <li>Check consistency with related website policies.</li>
-            <li>Insert the effective and last updated dates.</li>
-            <li>Obtain Indian legal/compliance review.</li>
-          </ul>
-        </div>
-      </>
-    ),
-  },
 ];
 
 export default function DisclaimerPolicyPage() {
@@ -250,14 +221,14 @@ export default function DisclaimerPolicyPage() {
         <span className="font-semibold text-slate-700">
           Effective Date:
         </span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
 
       <p>
         <span className="font-semibold text-slate-700">
           Last Updated:
         </span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -316,7 +287,7 @@ export default function DisclaimerPolicyPage() {
           </a>
 
           <p className="mt-4 text-xs leading-6 text-slate-400">
-            © {new Date().getFullYear()} SafalSevaKendra. All rights reserved.
+            © 2025 PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED. All rights reserved.
           </p>
         </footer>
       </article>

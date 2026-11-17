@@ -390,29 +390,7 @@ export default function GiftCardVoucherPolicyPage() {
           ))}
         </div>
 
-        {/* Publication Checklist */}
-        <section className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-7">
-          <h2 className="text-lg font-bold text-amber-900 sm:text-xl">
-            Before Publishing — Required Checks
-          </h2>
-
-          <ul className="mt-4 space-y-3">
-            {publicationChecks.map((check) => (
-              <li key={check} className="flex items-start gap-3">
-                <span
-                  aria-hidden="true"
-                  className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border border-amber-500 bg-white text-xs text-amber-800"
-                >
-                  ✓
-                </span>
-                <span className="text-sm leading-6 text-amber-950">
-                  {check}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
+       
         {/* Footer */}
         <footer className="mt-10 rounded-2xl border border-slate-200 bg-white px-5 py-6 text-center shadow-sm">
           <p className="text-sm font-semibold text-slate-700">
@@ -427,7 +405,7 @@ export default function GiftCardVoucherPolicyPage() {
           </a>
 
           <p className="mt-4 text-xs leading-6 text-slate-400">
-            © {new Date().getFullYear()} SafalSevaKendra. All rights reserved.
+            © 2025 PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED. All rights reserved.
           </p>
         </footer>
       </article>

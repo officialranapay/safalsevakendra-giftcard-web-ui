@@ -218,37 +218,7 @@ const sections = [
       </p>
     ),
   },
-  {
-    title: "Policy Review and Approval",
-    content: (
-      <div className="space-y-4">
-        <p>
-          This Policy should be reviewed at least annually and sooner if there
-          are material changes to products, business model, law, regulatory
-          directions, partner requirements, or identified risks. It becomes
-          the company&apos;s approved policy only after review and formal
-          approval by the authorised governing body.
-        </p>
-
-        <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-          <div>
-            <p className="text-sm font-semibold text-slate-800">Approved by</p>
-            <div className="mt-3 border-b border-dashed border-slate-400" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-800">Designation</p>
-            <div className="mt-3 border-b border-dashed border-slate-400" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-800">
-              Approval date
-            </p>
-            <div className="mt-3 border-b border-dashed border-slate-400" />
-          </div>
-        </div>
-      </div>
-    ),
-  },
+ 
   {
     title: "Contact",
     content: (
@@ -326,7 +296,7 @@ export default function AmlCftPolicyPage() {
 
       <p>
         <span className="font-semibold text-slate-700">Effective Date:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -352,15 +322,6 @@ export default function AmlCftPolicyPage() {
           </a>
         </section>
 
-        {/* Draft Notice */}
-        <section className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-          <p className="text-sm leading-7 text-amber-950">
-            <strong>Draft notice:</strong> This document is a policy template
-            for internal review. It must not be represented as formally
-            approved or as proof of regulatory compliance until the relevant
-            legal review and approval process is complete.
-          </p>
-        </section>
 
         {/* Policy Sections */}
         <div className="space-y-5">
@@ -386,54 +347,13 @@ export default function AmlCftPolicyPage() {
             </section>
           ))}
 
-          {/* Regulatory References */}
-          <section className="rounded-2xl border border-blue-100 bg-blue-50/70 p-5 sm:p-7">
-            <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
-              Regulatory Reference and Review Note
-            </h2>
-
-            <p className="mt-4 text-sm leading-7 text-slate-700 sm:text-base">
-              This draft is informed by the general framework under India’s
-              Prevention of Money Laundering Act, 2002, the Prevention of
-              Money-Laundering (Maintenance of Records) Rules, 2005, and
-              relevant regulator directions where applicable.
-            </p>
-
-            <div className="mt-5 space-y-4">
-              <a
-                href="https://fiuindia.gov.in/files/AML_Legislation/pmla_2002.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block break-all text-sm font-medium text-[#2456a6] hover:underline"
-              >
-                FIU-India — Prevention of Money Laundering Act, 2002
-              </a>
-
-              <a
-                href="https://rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11142"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block break-all text-sm font-medium text-[#2456a6] hover:underline"
-              >
-                Reserve Bank of India — Master Directions for PPI Issuers
-              </a>
-            </div>
-
-            <p className="mt-5 text-sm leading-7 text-slate-700">
-              This document is not legal advice and does not certify
-              regulatory compliance. Before implementation or publication,
-              an Indian AML/compliance lawyer and the company’s relevant
-              bank/issuer partners should confirm applicability, reporting
-              obligations, appointments, record-retention periods, and approval
-              requirements.
-            </p>
-          </section>
+       
         </div>
 
         {/* Footer */}
         <footer className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-slate-200 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
           <p>
-            © {new Date().getFullYear()} Prosper Professional Development Life
+            © 2025 Prosper Professional Development Life
             Private Limited.
           </p>
 

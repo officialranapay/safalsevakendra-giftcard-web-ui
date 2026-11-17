@@ -213,36 +213,7 @@ const sections = [
       </div>
     ),
   },
-  {
-    title: "Review Before Publication",
-    content: (
-      <>
-        <p>
-          Before publishing this draft, Prosper should confirm the designated
-          grievance officer or responsible team, the operational response
-          targets, escalation contacts for each relevant partner, and any
-          product-specific or statutory timelines that apply. Do not publish
-          unverified officer names, telephone numbers, regulatory escalation
-          routes or guaranteed resolution periods. This document should be
-          reviewed by an Indian legal/compliance professional before
-          publication.
-        </p>
-
-        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <h3 className="font-semibold text-amber-900">
-            Pre-publication checklist
-          </h3>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-amber-950">
-            <li>Confirm the responsible grievance officer or team.</li>
-            <li>Verify the complaint acknowledgement and response targets.</li>
-            <li>Confirm escalation contacts for relevant partners.</li>
-            <li>Check applicable statutory and product-specific timelines.</li>
-            <li>Obtain Indian legal/compliance review.</li>
-          </ul>
-        </div>
-      </>
-    ),
-  },
+  
 ];
 
 export default function GrievanceRedressalPolicyPage() {
@@ -287,12 +258,12 @@ export default function GrievanceRedressalPolicyPage() {
     <div className="mt-3 flex flex-col justify-center gap-1 text-sm text-slate-500 sm:flex-row sm:gap-6">
       <p>
         <span className="font-semibold text-slate-700">Effective Date:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
 
       <p>
         <span className="font-semibold text-slate-700">Last Updated:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -352,7 +323,7 @@ export default function GrievanceRedressalPolicyPage() {
           </a>
 
           <p className="mt-4 text-xs leading-6 text-slate-400">
-            © {new Date().getFullYear()} SafalSevaKendra. All rights reserved.
+            © 2025 PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED. All rights reserved.
           </p>
         </footer>
       </article>

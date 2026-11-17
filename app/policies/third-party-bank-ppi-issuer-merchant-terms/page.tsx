@@ -174,34 +174,7 @@ const sections = [
       </div>
     ),
   },
-  {
-    title: "Review Before Publication",
-    content: (
-      <div className="space-y-4">
-        <p>
-          This is a general draft. Before publication, verify the exact role of
-          Prosper and each partner, the applicable agreements, product-specific
-          terms and customer-support responsibilities. Do not identify a
-          partner as an issuer or regulated provider unless that description is
-          accurate. Obtain Indian legal/compliance review before publication.
-        </p>
-
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <p className="font-semibold text-amber-900">
-            Pre-publication checklist
-          </p>
-
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-amber-950">
-            <li>Confirm the actual issuer and service provider for each product.</li>
-            <li>Verify the signed partner agreements and permitted activities.</li>
-            <li>Confirm customer-support and grievance responsibilities.</li>
-            <li>Insert the effective date and last updated date.</li>
-            <li>Obtain Indian legal/compliance review before publication.</li>
-          </ul>
-        </div>
-      </div>
-    ),
-  },
+  
 ];
 
 export default function ThirdPartyTermsPolicyPage() {
@@ -238,14 +211,14 @@ export default function ThirdPartyTermsPolicyPage() {
         <span className="font-semibold text-slate-700">
           Effective Date:
         </span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
 
       <p>
         <span className="font-semibold text-slate-700">
           Last Updated:
         </span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -305,7 +278,7 @@ export default function ThirdPartyTermsPolicyPage() {
           </a>
 
           <p className="mt-4 text-xs leading-6 text-slate-400">
-            © {new Date().getFullYear()} SafalSevaKendra. All rights reserved.
+            © 2025 PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED. All rights reserved.
           </p>
         </footer>
       </article>

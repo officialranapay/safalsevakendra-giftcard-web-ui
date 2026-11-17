@@ -1798,13 +1798,17 @@ export default function ContactPage() {
                 Our Office
               </p>
 
-              <p className="mt-2 text-sm leading-6 text-[#315f91]">
-                D-30, Vibhuti Khand,
-                Gomti Nagar,
-                <br />
-                Lucknow, Uttar Pradesh –
-                226010
-              </p>
+             <p className="mt-2 text-sm leading-6 text-[#315f91]">
+  Maha Shrey Rai,
+
+  Dawanaha Seorahi,
+  <br />
+  Tamkuhi Raj, Kushinagar,
+  <br />
+  Uttar Pradesh – 274406,
+  <br />
+  India
+</p>
 
             </div>
 

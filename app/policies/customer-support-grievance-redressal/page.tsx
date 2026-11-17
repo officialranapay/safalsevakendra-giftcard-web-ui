@@ -294,7 +294,7 @@ export default function CustomerSupportGrievanceRedressalPage() {
 
     <p className="mt-3 text-sm text-slate-500">
       <span className="font-semibold text-slate-700">Effective Date:</span>{" "}
-      29 October 2026
+      29 October 2025
     </p>
   </div>
 </header>
@@ -337,28 +337,7 @@ export default function CustomerSupportGrievanceRedressalPage() {
           ))}
         </div>
 
-        {/* Legal Review Note */}
-        <section className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-7">
-          <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-lg text-amber-800">
-              !
-            </span>
-            <div>
-              <h2 className="text-lg font-bold text-amber-950">
-                Important Legal &amp; Operational Review Note
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-amber-950/90">
-                This is a general draft and is not legal advice. Before
-                publication, obtain review from qualified Indian legal and
-                compliance professionals. Confirm that the complaint-handling
-                process, escalation contacts, acknowledgement and resolution
-                timelines, and third-party issuer/merchant arrangements match
-                the company’s actual operations and applicable legal
-                requirements.
-              </p>
-            </div>
-          </div>
-        </section>
+  
 
         {/* Footer Contact */}
         <div className="mt-8 rounded-2xl bg-[#173d78] p-6 text-white sm:p-8">
@@ -374,7 +353,7 @@ export default function CustomerSupportGrievanceRedressalPage() {
             {supportEmail}
           </a>
           <p className="mt-5 text-xs text-blue-200">
-            © {new Date().getFullYear()} {companyName}. All rights reserved.
+            © 2025 {companyName}. All rights reserved.
           </p>
         </div>
       </div>

@@ -1545,7 +1545,7 @@ const policies = [
                 href="tel:+917318581589"
                 className="transition-colors hover:text-white"
               >
-                +91 63890 02737
+                +91 73185 81589
               </a>
             </li>
 
@@ -1560,14 +1560,16 @@ const policies = [
               </Icon>
 
               <span className="leading-6">
-                Safalsevakendra India Pvt. Ltd.
-                <br />
-                D30, Vibhuti Khand,
-                <br />
-                Gomti Nagar, Lucknow,
-                <br />
-                Uttar Pradesh – 226010
-              </span>
+  Maha Shrey Rai,
+  <br />
+  Dawanaha Seorahi,
+  <br />
+  Tamkuhi Raj, Kushinagar,
+  <br />
+  Uttar Pradesh – 274406,
+  <br />
+  India
+</span>
             </li>
           </ul>
         </div>
@@ -1575,7 +1577,7 @@ const policies = [
 
       <div className="border-t border-white/10">
         <p className="wrap py-5 text-center text-[13px] text-slate-400">
-          Safalsevakendra India Pvt. Ltd. © Copyright 2026. All Rights Reserved.
+          PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED © Copyright 2025. All Rights Reserved.
         </p>
       </div>
     </footer>

@@ -309,12 +309,12 @@ export default function TermsAndConditionsPage() {
     <div className="mt-3 flex flex-col justify-center gap-1 text-sm text-slate-500 sm:flex-row sm:gap-6">
       <p>
         <span className="font-semibold text-slate-700">Effective Date:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
 
       <p>
         <span className="font-semibold text-slate-700">Last Updated:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -365,32 +365,11 @@ export default function TermsAndConditionsPage() {
           ))}
         </div>
 
-        {/* Pre-publication checklist */}
-        <section className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-7">
-          <h2 className="text-lg font-bold text-amber-900">
-            Important Pre-Publication Checklist
-          </h2>
-
-          <ul className="mt-4 space-y-3 text-sm leading-6 text-amber-950">
-            {[
-              "Insert the effective date.",
-              "Identify the actual issuing bank/PPI issuer or brand for each product and link its terms before checkout.",
-              "Confirm Prosper’s exact activities are permitted under signed partner agreements and applicable law.",
-              "Align refunds, delivery timelines, customer support and complaint timelines with each issuer/partner agreement and applicable law.",
-              "Have the document reviewed by Indian legal/compliance counsel before publishing.",
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <span className="mt-1 font-bold">☐</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
+    
         {/* Footer */}
         <footer className="mt-10 border-t border-slate-200 py-6 text-center">
           <p className="text-xs leading-6 text-slate-500">
-            © {new Date().getFullYear()} PROSPER PROFESSIONAL DEVELOPMENT LIFE
+            © 2025 PROSPER PROFESSIONAL DEVELOPMENT LIFE
             PRIVATE LIMITED. All rights reserved.
           </p>
 

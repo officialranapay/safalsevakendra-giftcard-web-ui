@@ -202,12 +202,12 @@ export default function IntellectualPropertyCopyrightPage() {
     <div className="mt-3 flex flex-col justify-center gap-1 text-sm text-slate-500 sm:flex-row sm:gap-6">
       <p>
         <span className="font-semibold text-slate-700">Effective Date:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
 
       <p>
         <span className="font-semibold text-slate-700">Last Updated:</span>{" "}
-        29 October 2026
+        29 October 2025
       </p>
     </div>
   </div>
@@ -308,48 +308,13 @@ export default function IntellectualPropertyCopyrightPage() {
             </div>
           </section>
 
-          {/* Review Before Publication */}
-          <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-7">
-            <div className="flex items-start gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  className="h-5 w-5"
-                  aria-hidden="true"
-                >
-                  <path d="M12 3 2.8 20h18.4L12 3Z" />
-                  <path d="M12 9v5" />
-                  <path d="M12 17h.01" />
-                </svg>
-              </div>
-
-              <div>
-                <h2 className="text-lg font-bold text-amber-950 sm:text-xl">
-                  11. Review Before Publication
-                </h2>
-
-                <p className="mt-4 text-sm leading-7 text-amber-900 sm:text-base">
-                  This is a general draft. Before publication, confirm
-                  ownership and licensing of all website text, images, logos,
-                  brand assets and product materials, and ensure that any
-                  third-party trademarks are used with appropriate permission.
-                  Have this Policy reviewed by an Indian legal/compliance
-                  professional and align it with the website’s Terms &amp;
-                  Conditions and partner agreements.
-                </p>
-              </div>
-            </div>
-          </section>
+        
         </div>
 
         {/* Footer */}
         <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-slate-200 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
           <p>
-            © {new Date().getFullYear()} Prosper Professional Development Life
+            © 2025 Prosper Professional Development Life
             Private Limited.
           </p>
 
