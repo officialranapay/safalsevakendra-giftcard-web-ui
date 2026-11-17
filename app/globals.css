@@ -396,3 +396,23 @@ textarea,
     scroll-behavior: auto !important;
   }
 }
+/* Disable text selection globally */
+* {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+/* Disable image dragging */
+img {
+  -webkit-user-drag: none !important;
+  user-drag: none !important;
+  pointer-events: none;
+}
+
+/* Disable text selection on page */
+html,
+body {
+  -webkit-touch-callout: none;
+}

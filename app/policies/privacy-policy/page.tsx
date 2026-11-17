@@ -313,25 +313,7 @@ export default function PrivacyPolicyPage() {
 
 
 
-        {/* Company Details */}
-        <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Policy issued by
-          </p>
-
-          <h2 className="mt-2 text-lg font-bold text-slate-900 sm:text-xl">
-            Prosper Professional Development Life Private Limited
-          </h2>
-
-          <a
-            href="https://www.safalsevakendra.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-block break-all text-sm font-medium text-[#2456a6] hover:underline"
-          >
-            www.safalsevakendra.in
-          </a>
-        </section>
+      
 
         {/* Policy Sections */}
         <div className="space-y-5">

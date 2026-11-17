@@ -10,8 +10,7 @@ const companyDetails = [
   ["Company", "PROSPER PROFESSIONAL DEVELOPMENT LIFE PRIVATE LIMITED"],
   ["Website", "www.safalsevakendra.in"],
   ["Business", "Gift Cards, Gift Vouchers & Related Products"],
-  ["Effective Date", "Insert Date Before Publishing"],
-  ["Review Status", "Draft for Legal/Compliance Review"],
+  ["Registered Office", "Maha Shrey Rai, Dawanaha Seorahi, Tamkuhi Raj, Kushinagar, Uttar Pradesh – 274406, India"],
 ];
 
 const sections = [
