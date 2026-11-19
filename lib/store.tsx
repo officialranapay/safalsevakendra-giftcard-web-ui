@@ -452,20 +452,23 @@ export function Provider({
      UPDATE CART QUANTITY
   ========================================== */
 
-  const setQty = (key: string, qty: number) => {
-    setCart((current) =>
-      current
-        .map((item) =>
-          item.key === key
-            ? {
-                ...item,
-                qty,
-              }
-            : item
-        )
-        .filter((item) => item.qty > 0)
+const setQty = (key: string, qty: number) => {
+  setCart((current) => {
+    // Quantity zero hone par item remove
+    if (qty <= 0) {
+      return current.filter((item) => item.key !== key);
+    }
+
+    return current.map((item) =>
+      item.key === key
+        ? {
+            ...item,
+            qty: Math.floor(qty),
+          }
+        : item
     );
-  };
+  });
+};
 
   /* ==========================================
      CLEAR CART

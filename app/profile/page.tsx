@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useApp } from "@/lib/store"
 import { inr } from "@/lib/data"
-
+import { useGiftCardOrders } from "@/services/gift-card-orders/gift-card-orders.hooks";
 
 /* =====================================================
    SKELETON
@@ -208,14 +208,20 @@ export default function Profile() {
 
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
 
-  const {
-    user,
-    orders,
-    logout,
-    setLoginOpen,
-    ready,
-  } = useApp()
+ const {
+  user,
+  logout,
+  setLoginOpen,
+  ready,
+} = useApp()
 
+const {
+  data: ordersResponse,
+  isLoading: ordersLoading,
+  isError: ordersError,
+} = useGiftCardOrders()
+
+const orders = ordersResponse?.data?.orders ?? []
 
   /* Store hydrate hone tak skeleton */
   if (!ready) {
@@ -358,21 +364,21 @@ export default function Profile() {
       : "Status not available"
 
   const st = [
-    [
-      "Orders",
-      orders.length,
-    ],
+   [
+  "Orders",
+  ordersLoading ? "..." : ordersError ? "—" : orders.length,
+],
 
-    [
-      "Total spent",
-      inr(
-        orders.reduce(
-          (s: number, o: any) =>
-            s + o.total,
-          0
-        )
-      ),
-    ],
+[
+  "Total order value",
+  inr(
+    orders.reduce(
+      (sum: number, order: any) =>
+        sum + Number(order.payableAmount || 0),
+      0
+    )
+  ),
+],
 
     [
       "Active gift cards",

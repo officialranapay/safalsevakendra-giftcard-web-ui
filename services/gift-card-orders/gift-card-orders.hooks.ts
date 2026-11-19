@@ -1,7 +1,10 @@
 
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import {
   getGiftCardOrdersApi,
@@ -10,7 +13,7 @@ import {
 
 /*
  * ==========================================
- * SAFALSEVA GIFT CARD ORDER QUERY KEYS
+ * QUERY KEYS
  * ==========================================
  */
 
@@ -29,7 +32,7 @@ export const giftCardOrderKeys = {
 
 /*
  * ==========================================
- * GET ALL GIFT CARD ORDERS
+ * GET ALL ORDERS
  * ==========================================
  */
 
@@ -39,15 +42,23 @@ export function useGiftCardOrders() {
 
     queryFn: getGiftCardOrdersApi,
 
-    staleTime: 30 * 1000,
+    staleTime: 0,
 
-    retry: false,
+    refetchOnMount: "always",
+
+    refetchOnWindowFocus: true,
+
+    refetchOnReconnect: true,
+
+    refetchInterval: 10000,
+
+    retry: 1,
   });
 }
 
 /*
  * ==========================================
- * GET SINGLE GIFT CARD ORDER
+ * GET SINGLE ORDER
  * ==========================================
  */
 
@@ -62,8 +73,25 @@ export function useGiftCardOrderById(
 
     enabled: Boolean(orderId?.trim()),
 
-    staleTime: 30 * 1000,
+    staleTime: 0,
 
-    retry: false,
+    refetchOnWindowFocus: true,
+
+    retry: 1,
   });
+}
+
+/*
+ * ==========================================
+ * REFRESH ORDERS AFTER PAYMENT / ORDER CREATION
+ * ==========================================
+ */
+
+export function useRefreshGiftCardOrders() {
+  const queryClient = useQueryClient();
+
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: giftCardOrderKeys.all,
+    });
 }

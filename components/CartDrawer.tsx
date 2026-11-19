@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   ArrowRight,
   Gift,
+  Trash2,
 } from "lucide-react";
 
 import { useApp } from "@/lib/store";
@@ -207,17 +208,14 @@ export default function CartDrawer() {
                           <div className="mt-3 flex items-center justify-between gap-3">
                             {/* QUANTITY CONTROLS */}
                             <div className="flex h-9 items-center border border-slate-200">
-                              <button
-                                type="button"
-                                className="grid h-9 w-8 place-items-center text-slate-600 transition-colors hover:bg-[#EFF6FF] hover:text-[#0757C8] disabled:cursor-not-allowed disabled:opacity-40"
-                                onClick={() =>
-                                  setQty(item.key, item.qty - 1)
-                                }
-                                disabled={item.qty <= 1}
-                                aria-label={`Decrease quantity of ${item.title}`}
-                              >
-                                <Minus size={14} />
-                              </button>
+                             <button
+  type="button"
+  className="grid h-9 w-8 place-items-center text-slate-600 transition-colors hover:bg-[#EFF6FF] hover:text-[#0757C8]"
+  onClick={() => setQty(item.key, item.qty - 1)}
+  aria-label={`Decrease quantity of ${item.title}`}
+>
+  <Minus size={14} />
+</button>
 
                               <span className="min-w-8 text-center text-sm font-semibold text-slate-900">
                                 {item.qty}
@@ -235,9 +233,21 @@ export default function CartDrawer() {
                               </button>
                             </div>
 
-                            <p className="shrink-0 text-sm font-bold text-slate-900">
-                              {inr(line.s - line.d)}
-                            </p>
+                            <div className="flex shrink-0 items-center gap-3">
+  <p className="text-sm font-bold text-slate-900">
+    {inr(line.s - line.d)}
+  </p>
+
+  <button
+    type="button"
+    onClick={() => setQty(item.key, 0)}
+    className="grid h-9 w-9 place-items-center rounded-md text-red-500 transition-colors hover:bg-red-50 hover:text-red-700"
+    aria-label={`Remove ${item.title} from cart`}
+    title="Remove item"
+  >
+    <Trash2 size={17} />
+  </button>
+</div>
                           </div>
                         </div>
                       </article>
